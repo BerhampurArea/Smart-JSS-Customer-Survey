@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jio Customer Feedback Form</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Nunito:wght@400;500;600;700&display=swap');
+:root{
+  --red:#e31837;--blue:#003087;--bg:#f4f6fb;--card:#fff;
+  --text:#1a1f36;--muted:#6b7280;--border:#e2e8f0;
+  --green:#16a34a;--gbg:#dcfce7;--rbg:#fee2e2;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,var(--blue),#001a5e);overflow:hidden;position:relative;}
+.hdr::before{content:'';position:absolute;top:-50px;right:-50px;width:220px;height:220px;background:rgba(227,24,55,0.12);border-radius:50%;}
+.hdr-inner{position:relative;z-index:1;display:flex;align-items:center;gap:14px;padding:18px 20px;}
+.logo{width:54px;height:54px;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:21px;color:#fff;flex-shrink:0;box-shadow:0 4px 18px rgba(227,24,55,0.5);}
+.hdr-text h1{font-family:'Rajdhani',sans-serif;font-size:19px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.hdr-text p{font-size:12px;color:rgba(255,255,255,.6);margin-top:2px;}
+
+/* BANNER */
+.banner{padding:9px 18px;font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:8px;}
+.banner.warn{background:#fff3cd;color:#856404;border-bottom:2px solid #ffc107;}
+.banner.ok{background:#d1fae5;color:#065f46;border-bottom:2px solid #10b981;}
+.banner.err{background:#fee2e2;color:#991b1b;border-bottom:2px solid #ef4444;}
+
+main{max-width:540px;margin:0 auto;padding:18px 14px 60px;}
+
+/* CARDS */
+.card{background:var(--card);border-radius:15px;box-shadow:0 3px 20px rgba(0,48,135,.09);padding:20px 18px;margin-bottom:14px;}
+.ctitle{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.cicon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ci-blue{background:#eff6ff;}.ci-green{background:#ecfdf5;}.ci-yellow{background:#fef9c3;}
+.ctitle h2{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.4px;}
+
+/* FIELDS */
+.field{margin-bottom:13px;}
+.field label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:5px;}
+.field input,.field select{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:9px;font-family:'Nunito',sans-serif;font-size:14px;color:var(--text);background:#fff;-webkit-appearance:none;transition:border-color .2s,box-shadow .2s;}
+.field input:focus,.field select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,48,135,.08);}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+
+/* YES/NO */
+.q{margin-bottom:14px;}
+.q p{font-size:13.5px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+.ynrow{display:flex;gap:9px;}
+.ynbtn{flex:1;padding:10px;border:2px solid var(--border);border-radius:9px;background:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;-webkit-tap-highlight-color:transparent;}
+.ynbtn.yes:hover{border-color:var(--green);background:#f0fdf4;}
+.ynbtn.no:hover{border-color:var(--red);background:#fff5f5;}
+.ynbtn.yes.on{border-color:var(--green);background:var(--gbg);color:var(--green);}
+.ynbtn.no.on{border-color:var(--red);background:var(--rbg);color:var(--red);}
+.ynbtn input{display:none;}
+
+/* OFFER TOGGLES */
+.offer{display:flex;align-items:flex-start;gap:11px;padding:12px 13px;border:2px solid var(--border);border-radius:11px;cursor:pointer;margin-bottom:10px;transition:all .15s;}
+.offer.on{border-color:var(--green);background:#f0fdf4;}
+.offer input{display:none;}
+.odot{width:21px;height:21px;border-radius:50%;border:2px solid var(--border);background:#fff;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.offer.on .odot{background:var(--green);border-color:var(--green);}
+.offer.on .odot::after{content:'✓';color:#fff;font-size:11px;font-weight:700;}
+.otxt{font-size:13.5px;font-weight:600;line-height:1.4;}
+.otxt small{display:block;font-weight:400;color:var(--muted);font-size:12px;margin-top:2px;}
+
+/* DIVIDER */
+.div{height:1px;background:var(--border);margin:2px 0 14px;}
+
+/* SUBMIT */
+.subbtn{width:100%;padding:14px;background:linear-gradient(135deg,var(--blue),#0044cc);color:#fff;border:none;border-radius:13px;font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;letter-spacing:.4px;cursor:pointer;box-shadow:0 5px 18px rgba(0,48,135,.3);display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;margin-top:4px;}
+.subbtn:hover{transform:translateY(-1px);}
+.subbtn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.spin{width:17px;height:17px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
+.errmsg{background:var(--rbg);color:#b91c1c;padding:10px 13px;border-radius:8px;font-size:13px;margin-top:10px;display:none;}
+.errmsg.show{display:block;}
+
+/* SUCCESS */
+.success{display:none;text-align:center;padding:48px 18px;}
+.success.show{display:block;}
+.sicon{width:78px;height:78px;border-radius:50%;background:var(--gbg);margin:0 auto 18px;display:flex;align-items:center;justify-content:center;font-size:34px;}
+.success h2{font-family:'Rajdhani',sans-serif;font-size:24px;font-weight:700;color:var(--green);margin-bottom:8px;}
+.success p{color:var(--muted);font-size:14px;margin-bottom:22px;line-height:1.5;}
+.newbtn{padding:11px 30px;background:var(--blue);color:#fff;border:none;border-radius:11px;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:.3px;}
+
+@media(max-width:400px){.frow{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-inner">
+    <div class="logo">Jio</div>
+    <div class="hdr-text">
+      <h1>CUSTOMER FEEDBACK FORM</h1>
+      <p>Odisha &nbsp;·&nbsp; <span id="hdr-date"></span></p>
+    </div>
+  </div>
+</div>
+<div class="banner warn" id="banner">⚠️ Configure JSONBin API Key &amp; Bin ID inside this file before deploying.</div>
+
+<main>
+
+  <!-- SUCCESS -->
+  <div class="success" id="success">
+    <div class="sicon">✅</div>
+    <h2>Thank You!</h2>
+    <p id="smsg">Your feedback has been saved to the cloud.<br>The admin portal will reflect this entry.</p>
+    <button class="newbtn" onclick="newEntry()">+ New Entry</button>
+  </div>
+
+  <!-- FORM -->
+  <div id="formwrap">
+
+    <div class="card">
+      <div class="ctitle"><div class="cicon ci-blue">🏪</div><h2>Store &amp; Agent Details</h2></div>
+      <div class="frow">
+        <div class="field"><label>Date</label><input type="date" id="f-date"></div>
+        <div class="field"><label>JSS PRM ID</label><input type="text" id="f-prm" placeholder="PRM ID"></div>
+      </div>
+      <div class="field">
+        <label>Jio Center</label>
+        <select id="f-store">
+          <option value="">-- Select Jio Center --</option>
+          <option>OR-BRAH-JC-01</option><option>OR-BNPN-JC-01</option><option>OR-JYPR-JC-01</option>
+          <option>OR-RYGD-JC-01</option><option>OR-SNBD-JC-01</option><option>OR-BLSR-JC-01</option>
+          <option>OR-BRBL-JC-01</option><option>OR-BRPD-JC-01</option><option>OR-BDRK-JC-01</option>
+          <option>OR-BBSR-JC-01</option><option>OR-BBSR-JC-02</option><option>OR-CCKK-JC-01</option>
+          <option>OR-DKLL-JC-01</option><option>OR-JGPT-JC-01</option><option>OR-JTNI-JC-01</option>
+          <option>OR-KNDP-JC-01</option><option>OR-KDJR-JC-01</option><option>OR-KURD-JC-01</option>
+          <option>OR-PRDP-JC-01</option><option>OR-PURI-JC-01</option><option>OR-BLGR-JC-01</option>
+          <option>OR-BGRH-JC-01</option><option>OR-BLPH-JC-01</option><option>OR-BJJG-JC-01</option>
+          <option>OR-JRGD-JC-01</option><option>OR-NLCO-JC-01</option><option>OR-RGNP-JC-01</option>
+          <option>OR-RRKL-JC-01</option><option>OR-SMBP-JC-01</option><option>OR-SUNA-JC-01</option>
+          <option>OR-TLCH-JC-01</option>
+        </select>
+      </div>
+      <div class="field"><label>Agent / Executive Name</label><input type="text" id="f-agent" placeholder="Executive filling this form"></div>
+    </div>
+
+    <div class="card">
+      <div class="ctitle"><div class="cicon ci-blue">👤</div><h2>Customer Details</h2></div>
+      <div class="field"><label>Customer Name</label><input type="text" id="f-name" placeholder="Full name"></div>
+      <div class="field"><label>Contact Number</label><input type="tel" id="f-contact" placeholder="10-digit mobile" maxlength="10"></div>
+    </div>
+
+    <div class="card">
+      <div class="ctitle"><div class="cicon ci-blue">📱</div><h2>Mobile</h2></div>
+      <div class="q"><p>1. Does your mobile phone have <strong>5000 GB of storage</strong>?</p>
+        <div class="ynrow"><button class="ynbtn yes" onclick="yn(this,'m1','yes')"><input type="radio" name="m1"> ✓ Yes</button><button class="ynbtn no" onclick="yn(this,'m1','no')"><input type="radio" name="m1"> ✗ No</button></div></div>
+      <div class="div"></div>
+      <div class="q"><p>2. Does your mobile phone have <strong>Unlimited Data</strong>?</p>
+        <div class="ynrow"><button class="ynbtn yes" onclick="yn(this,'m2','yes')"><input type="radio" name="m2"> ✓ Yes</button><button class="ynbtn no" onclick="yn(this,'m2','no')"><input type="radio" name="m2"> ✗ No</button></div></div>
+      <div class="div"></div>
+      <div class="q" style="margin-bottom:0"><p>3. Does your mobile phone have <strong>JioHotStar</strong>?</p>
+        <div class="ynrow"><button class="ynbtn yes" onclick="yn(this,'m3','yes')"><input type="radio" name="m3"> ✓ Yes</button><button class="ynbtn no" onclick="yn(this,'m3','no')"><input type="radio" name="m3"> ✗ No</button></div></div>
+    </div>
+
+    <div class="card">
+      <div class="ctitle"><div class="cicon ci-green">📺</div><h2>Home Entertainment (TV)</h2></div>
+      <div class="q"><p>1. Does your television have <strong>1000 Channels</strong>?</p>
+        <div class="ynrow"><button class="ynbtn yes" onclick="yn(this,'t1','yes')"><input type="radio" name="t1"> ✓ Yes</button><button class="ynbtn no" onclick="yn(this,'t1','no')"><input type="radio" name="t1"> ✗ No</button></div></div>
+      <div class="div"></div>
+      <div class="q"><p>2. Does your television have <strong>12 OTT Apps</strong>?</p>
+        <div class="ynrow"><button class="ynbtn yes" onclick="yn(this,'t2','yes')"><input type="radio" name="t2"> ✓ Yes</button><button class="ynbtn no" onclick="yn(this,'t2','no')"><input type="radio" name="t2"> ✗ No</button></div></div>
+      <div class="div"></div>
+      <div class="q" style="margin-bottom:0"><p>3. Is your home a <strong>WiFi Home</strong>?</p>
+        <div class="ynrow"><button class="ynbtn yes" onclick="yn(this,'t3','yes')"><input type="radio" name="t3"> ✓ Yes</button><button class="ynbtn no" onclick="yn(this,'t3','no')"><input type="radio" name="t3"> ✗ No</button></div></div>
+    </div>
+
+    <div class="card">
+      <div class="ctitle"><div class="cicon ci-yellow">🎁</div><h2>Jio SIM Offer</h2></div>
+      <label class="offer" id="ot-sim" onclick="tog('ot-sim','o-sim')"><input type="checkbox" id="o-sim"><div class="odot"></div><div class="otxt">Eligible for Jio SIM<small>Activate today and enjoy all benefits</small></div></label>
+      <label class="offer" id="ot-fib" onclick="tog('ot-fib','o-fib')" style="margin-bottom:0"><input type="checkbox" id="o-fib"><div class="odot"></div><div class="otxt">Eligible for Jio AirFiber<small>1 Month Free — Connect your home today</small></div></label>
+    </div>
+
+    <div class="errmsg" id="errmsg"></div>
+    <button class="subbtn" id="subbtn" onclick="submit()"><span id="sublbl">Submit Feedback →</span></button>
+  </div>
+
+</main>
+<script>
+/* ═══════════════════════════════════════════════
+   CONFIG — REPLACE THESE BEFORE DEPLOYING
+   1. Sign up free at https://jsonbin.io
+   2. Profile → API Keys → copy Master Key
+   3. Bins → New Bin → paste [] → Create → copy BIN ID
+═══════════════════════════════════════════════ */
+const API_KEY = 'PASTE_YOUR_MASTER_KEY_HERE';
+const BIN_ID  = 'PASTE_YOUR_BIN_ID_HERE';
+/* ═══════════════════════════════════════════════ */
+
+const BASE = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
+const H    = { 'Content-Type':'application/json', 'X-Master-Key': API_KEY };
+const yns  = {};
+const ok   = !API_KEY.includes('PASTE') && !BIN_ID.includes('PASTE');
+
+// Init
+document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+document.getElementById('hdr-date').textContent = new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+if (ok) {
+  const b = document.getElementById('banner');
+  b.className = 'banner ok';
+  b.innerHTML = '✅ <strong>Cloud connected.</strong> Responses sync to JSONBin automatically.';
+}
+
+function yn(el, name, val) {
+  el.closest('.ynrow').querySelectorAll('.ynbtn').forEach(b => b.classList.remove('on'));
+  el.classList.add('on'); yns[name] = val;
+}
+function tog(wid, cid) {
+  setTimeout(() => document.getElementById(wid).classList.toggle('on', document.getElementById(cid).checked), 0);
+}
+function showErr(msg) {
+  const e = document.getElementById('errmsg');
+  e.textContent = '⚠️ ' + msg; e.classList.add('show');
+  e.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function setLoad(on) {
+  const btn = document.getElementById('subbtn');
+  btn.disabled = on;
+  document.getElementById('sublbl').textContent = on ? 'Saving...' : 'Submit Feedback →';
+  const sp = btn.querySelector('.spin');
+  if (on && !sp) btn.insertAdjacentHTML('beforeend','<span class="spin"></span>');
+  if (!on && sp) sp.remove();
+}
+
+async function submit() {
+  const name    = document.getElementById('f-name').value.trim();
+  const contact = document.getElementById('f-contact').value.trim();
+  const prm     = document.getElementById('f-prm').value.trim();
+  const store   = document.getElementById('f-store').value;
+  document.getElementById('errmsg').classList.remove('show');
+
+  if (!store)   return showErr('Please select a Jio Center.');
+  if (!prm)     return showErr('Please enter JSS PRM ID.');
+  if (!name)    return showErr('Please enter Customer Name.');
+  if (contact.length < 10) return showErr('Please enter a valid 10-digit Contact Number.');
+
+  const entry = {
+    id: Date.now(),
+    date:    document.getElementById('f-date').value,
+    prm, store,
+    agent:   document.getElementById('f-agent').value.trim(),
+    name, contact,
+    m1:yns.m1||'', m2:yns.m2||'', m3:yns.m3||'',
+    t1:yns.t1||'', t2:yns.t2||'', t3:yns.t3||'',
+    o_sim:  document.getElementById('o-sim').checked ? 'Yes':'No',
+    o_fib:  document.getElementById('o-fib').checked ? 'Yes':'No',
+    ts: new Date().toISOString()
+  };
+
+  // Always save locally as backup
+  const local = JSON.parse(localStorage.getItem('jio_v3')||'[]');
+  local.push(entry); localStorage.setItem('jio_v3', JSON.stringify(local));
+
+  if (!ok) {
+    document.getElementById('smsg').textContent = 'Saved locally. Configure JSONBin for cloud sync.';
+    showSuccess(); return;
+  }
+
+  setLoad(true);
+  try {
+    const res  = await fetch(BASE + '/latest', { headers: H });
+    const data = await res.json();
+    const arr  = Array.isArray(data.record) ? data.record : [];
+    arr.push(entry);
+    await fetch(BASE, { method:'PUT', headers:H, body:JSON.stringify(arr) });
+    setLoad(false);
+    document.getElementById('smsg').textContent = '✓ Saved to cloud. Admin portal will reflect this entry.';
+    showSuccess();
+  } catch(e) {
+    setLoad(false);
+    document.getElementById('smsg').textContent = 'Saved locally (network issue). Admin can import from local backup.';
+    showSuccess();
+  }
+}
+
+function showSuccess() {
+  document.getElementById('formwrap').style.display = 'none';
+  document.getElementById('success').classList.add('show');
+  window.scrollTo(0,0);
+}
+
+function newEntry() {
+  document.getElementById('success').classList.remove('show');
+  document.getElementById('formwrap').style.display = 'block';
+  ['f-name','f-contact','f-prm','f-agent'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('f-store').value='';
+  document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+  document.querySelectorAll('.ynbtn').forEach(b => b.classList.remove('on'));
+  ['m1','m2','m3','t1','t2','t3'].forEach(k => delete yns[k]);
+  ['o-sim','o-fib'].forEach(id => document.getElementById(id).checked=false);
+  ['ot-sim','ot-fib'].forEach(id => document.getElementById(id).classList.remove('on'));
+  document.getElementById('errmsg').classList.remove('show');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
